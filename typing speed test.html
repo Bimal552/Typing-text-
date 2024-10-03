@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f5;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 80%;
+      max-width: 700px;
+    }
+
+    .sentence {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #2980b9;
+    }
+
+    #typingInput {
+      width: 100%;
+      padding: 10px;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+
+    .wpm-display {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .wpm-meter {
+      height: 20px;
+      width: 100%;
+      background: #ecf0f1;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .wpm-progress {
+      height: 100%;
+      width: 0;
+      background: #27ae60;
+    }
+
+    .ad-space {
+      margin-top: 30px;
+      background-color: #e1e1e1;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      color: #333;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Typing Speed Test</h1>
+    
+    <!-- Random Sentence Display -->
+    <div class="sentence" id="sentenceDisplay"></div>
+
+    <!-- Input Box for Typing -->
+    <input type="text" id="typingInput" placeholder="Start typing..." autocomplete="off">
+
+    <!-- WPM Display -->
+    <div class="wpm-display">Your WPM: <span id="wpm">0</span></div>
+
+    <!-- WPM Meter -->
+    <div class="wpm-meter">
+      <div class="wpm-progress" id="wpmProgress"></div>
+    </div>
+
+    <!-- Space for Google Ads -->
+    <div class="ad-space">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+
+  <script>
+    const sentences = [
+      "The quick brown fox jumps over the lazy dog.",
+      "Typing fast requires practice and skill.",
+      "JavaScript is a versatile programming language.",
+      "Test your typing speed with this simple tool.",
+      "Frontend development includes HTML, CSS, and JavaScript."
+    ];
+
+    const sentenceDisplay = document.getElementById('sentenceDisplay');
+    const typingInput = document.getElementById('typingInput');
+    const wpmDisplay = document.getElementById('wpm');
+    const wpmProgress = document.getElementById('wpmProgress');
+
+    let startTime, endTime;
+    let totalWords = 0;
+    let currentSentence = "";
+
+    // Generate Random Sentence
+    function generateSentence() {
+      currentSentence = sentences[Math.floor(Math.random() * sentences.length)];
+      sentenceDisplay.textContent = currentSentence;
+    }
+
+    // Calculate WPM
+    function calculateWPM() {
+      const typedText = typingInput.value;
+      const elapsedTime = (Date.now() - startTime) / 1000 / 60; // time in minutes
+      totalWords = typedText.trim().split(/\s+/).length;
+      const wpm = Math.floor(totalWords / elapsedTime);
+      wpmDisplay.textContent = wpm;
+
+      // Update WPM Meter (assuming max WPM is 100 for visualization)
+      const wpmPercent = Math.min((wpm / 100) * 100, 100);
+      wpmProgress.style.width = wpmPercent + '%';
+    }
+
+    // Start Typing Test
+    typingInput.addEventListener('input', () => {
+      if (!startTime) {
+        startTime = Date.now();
+      }
+      calculateWPM();
+
+      if (typingInput.value.trim() === currentSentence) {
+        endTime = Date.now();
+        typingInput.disabled = true;
+        setTimeout(() => {
+          alert("Test completed! Your WPM is " + wpmDisplay.textContent);
+          typingInput.value = "";
+          typingInput.disabled = false;
+          startTime = null;
+          generateSentence();
+        }, 100);
+      }
+    });
+
+    // Initialize
+    window.onload = () => {
+      generateSentence();
+    }
+  </script>
+
+</body>
+</html>
